@@ -29,7 +29,7 @@ def check_field_occupied(row, column):
         print('Sorry, this field is occupied, please choose different field')
         row = int(input("Please indicate the number of row (from 1 to 3) and column(from 1 to 3): "))
         column = int(input("Please indicate the number of row (from 1 to 3) and column (from 1 to 3): "))
-
+    return row, column
 
 def insert_circle_or_cross(current_player, row, column):
     if current_player == 'x':
@@ -77,7 +77,7 @@ def game():
     current_player = choose_start_player()
     while win_game() == 0:
         row, column = choose_field()
-        check_field_occupied(row, column)
+        row, column = check_field_occupied(row, column)
         insert_circle_or_cross(current_player, row, column)
         print_board()
         current_player = change_player(current_player)
