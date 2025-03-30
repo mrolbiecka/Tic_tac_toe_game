@@ -1,87 +1,76 @@
 import random
-BOARD = [['| |','| |','| |'],['| |','| |','| |'],['| |','| |','| |']]
+
+EMPTY_FIELD = ' '
+ROW_NUMBER = 3
+COLUMN_NUMBER = 3
+CROSS = 'x'
+CIRCLE = 'o'
+board = [[EMPTY_FIELD for _ in range(COLUMN_NUMBER)] for _ in range(ROW_NUMBER)]
 
 
 def print_board():
-    for i in BOARD:
-        print(*i)
+    for i in board:
+        print(f"|{i[0]}| |{i[1]}| |{i[2]}|")
 
 
 def choose_start_player():
-    random_number = random.randint(1,2)
-    if random_number == 1:
-        print("Player x can start the game")
-        current_player = 'x'
-    else:
-        print("Player o can start the game")
-        current_player ='y'
+    current_player = random.choice([CIRCLE, CROSS])
+    print(f"Player {current_player} can start the game")
     return current_player
 
 
 def choose_field():
     row = int(input("Please indicate the number of row (from 1 to 3): " ))
     column = int(input("Please indicate the number of column (from 1 to 3): " ))
-    return row, column
-
-
-def check_field_occupied(row, column):
-    while BOARD[row - 1][column - 1] == '|x|' or BOARD[row - 1][column - 1] == '|o|':
+    while board[row - 1][column - 1] != EMPTY_FIELD:
         print('Sorry, this field is occupied, please choose different field')
-        row = int(input("Please indicate the number of row (from 1 to 3) and column (from 1 to 3): "))
-        column = int(input("Please indicate the number of row (from 1 to 3) and column (from 1 to 3): "))
+        row = int(input("Please indicate the number of row (from 1 to 3): "))
+        column = int(input("Please indicate the number of column (from 1 to 3): "))
     return row, column
 
 
-def insert_circle_or_cross(current_player, row, column):
-    if current_player == 'x':
-        BOARD[row - 1][column - 1] = '|x|'
-    else:
-        BOARD[row - 1][column - 1] = '|o|'
+def insert_mark(current_player, row, column):
+    board[row - 1][column - 1] = CROSS if current_player == CROSS else CIRCLE
 
 
-def win_game():
+def check_if_win():
     who_won = 0
-    if BOARD[0][0] == BOARD[1][0] == BOARD[2][0] != '| |':
-        who_won = BOARD[0][0]
-    elif BOARD[0][1] == BOARD[1][1] == BOARD[2][1] != '| |':
-        who_won = BOARD[0][1]
-    elif BOARD[0][2] == BOARD[1][2] == BOARD[2][2] != '| |':
-        who_won = BOARD[0][2]
+    if board[0][0] == board[1][0] == board[2][0] != EMPTY_FIELD:
+        who_won = board[0][0]
+    elif board[0][1] == board[1][1] == board[2][1] != EMPTY_FIELD:
+        who_won = board[0][1]
+    elif board[0][2] == board[1][2] == board[2][2] != EMPTY_FIELD:
+        who_won = board[0][2]
 
-    elif BOARD[0][0] == BOARD[0][1] == BOARD[0][2] != '| |':
-        who_won = BOARD[0][0]
-    elif BOARD[1][0] == BOARD[1][1] == BOARD[1][2] != '| |':
-        who_won = BOARD[1][0]
-    elif BOARD[2][0] == BOARD[2][1] == BOARD[2][2] != '| |':
-        who_won = BOARD[2][0]
+    elif board[0][0] == board[0][1] == board[0][2] != EMPTY_FIELD:
+        who_won = board[0][0]
+    elif board[1][0] == board[1][1] == board[1][2] != EMPTY_FIELD:
+        who_won = board[1][0]
+    elif board[2][0] == board[2][1] == board[2][2] != EMPTY_FIELD:
+        who_won = board[2][0]
 
-    elif BOARD[0][0] == BOARD[1][1] == BOARD[2][2] != '| |':
-        who_won = BOARD[0][0]
-    elif BOARD[0][2] == BOARD[1][1] == BOARD[2][0] != '| |':
-        who_won = BOARD[0][2]
+    elif board[0][0] == board[1][1] == board[2][2] != EMPTY_FIELD:
+        who_won = board[0][0]
+    elif board[0][2] == board[1][1] == board[2][0] != EMPTY_FIELD:
+        who_won = board[0][2]
     return who_won
 
 
 def change_player(current_player):
-    if current_player == 'x':
-        current_player ='o'
-    else:
-        current_player = 'x'
-    return current_player
+    return CIRCLE if current_player == CROSS else CROSS
 
 
-def game():
+def run_game():
     print("Welcome in the game tic_tac_toe!")
     print("Below you see our board: ")
     print_board()
     current_player = choose_start_player()
-    while win_game() == 0:
+    while check_if_win() == 0:
         row, column = choose_field()
-        row, column = check_field_occupied(row, column)
-        insert_circle_or_cross(current_player, row, column)
+        insert_mark(current_player, row, column)
         print_board()
         current_player = change_player(current_player)
-    print(f'Congratulations for player {win_game()[1]}!')
+    print(f'Congratulations for player {check_if_win()}!')
 
 
-game()
+run_game()
