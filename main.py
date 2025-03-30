@@ -1,5 +1,5 @@
 import random
-BOARD = [['|o|','|o|','|o|'],['||','|x|','| |'],['||','| |','|x|']]
+BOARD = [['|o|','| |','| |'],['| |','| |','| |'],['| |','| |','| |']]
 
 
 def print_board():
@@ -19,7 +19,7 @@ def choose_start_player():
 
 def choose_field():
     row = int(input("Please indicate the number of row (from 1 to 3): " ))
-    column = int(input("Please indicate the number of column(from 1 to 3): " ))
+    column = int(input("Please indicate the number of column (from 1 to 3): " ))
     return row, column
 
 
@@ -69,20 +69,27 @@ def win_game():
     return win
 
 
+def change_player(current_player):
+    if current_player == 'x':
+        current_player ='o'
+    else:
+        current_player = 'x'
+    return current_player
+
+
 def game():
     print("Welcome in the game tic_tac_toe!")
     print("Below you see our board: ")
     print_board()
-    x_turn = choose_start_player()
-    while win_game() != 0:
+    current_player = choose_start_player()
+    while win_game() == 0:
         row, column = choose_field()
         check_field_occupied(row, column)
-        insert_circle_or_cross(x_turn, row, column)
+        insert_circle_or_cross(current_player, row, column)
         print_board()
-        x_turn = False
+        current_player = change_player(current_player)
 
 
 win_game()
-
 
 
