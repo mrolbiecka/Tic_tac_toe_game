@@ -1,5 +1,5 @@
 import random
-BOARD = [['|o|','| |','| |'],['| |','| |','| |'],['| |','| |','| |']]
+BOARD = [['| |','| |','| |'],['| |','| |','| |'],['| |','| |','| |']]
 
 
 def print_board():
@@ -11,10 +11,11 @@ def choose_start_player():
     random_number = random.randint(1,2)
     if random_number == 1:
         print("Player x can start the game")
-        return True
+        current_player = 'x'
     else:
         print("Player o can start the game")
-        return False
+        current_player ='y'
+    return current_player
 
 
 def choose_field():
@@ -30,43 +31,35 @@ def check_field_occupied(row, column):
         column = int(input("Please indicate the number of row (from 1 to 3) and column (from 1 to 3): "))
 
 
-def insert_circle_or_cross(x_turn, row, column):
-    if x_turn:
+def insert_circle_or_cross(current_player, row, column):
+    if current_player == 'x':
         BOARD[row - 1][column - 1] = '|x|'
     else:
         BOARD[row - 1][column - 1] = '|o|'
 
 
+
 def win_game():
-    for i in range(len(BOARD)):
-        for j in range(len(BOARD[i])):
-            if BOARD[i][j] == '|o|':
-                print('Circle wins the game!')
-                win = 'circle'
-                return win
-            if BOARD[i][j] == '|x|':
-                print('Cross wins the game!')
-                win = 'cross'
-                return win
-            if BOARD[j][i] == '|x|':
-                print('Cross wins the game!')
-                win = 'cross'
-                return win
-            if BOARD[j][i] == '|o|':
-                print('Circle wins the game!')
-                win = 'circle'
-                return win
+    who_won = 0
+    if BOARD[0][0] == BOARD[1][0] == BOARD[2][0] != '| |':
+        who_won = BOARD[0][0]
+    elif BOARD[0][1] == BOARD[1][1] == BOARD[2][1] != '| |':
+        who_won = BOARD[0][1]
+    elif BOARD[0][2] == BOARD[1][2] == BOARD[2][2] != '| |':
+        who_won = BOARD[0][2]
 
+    elif BOARD[0][0] == BOARD[0][1] == BOARD[0][2] != '| |':
+        who_won = BOARD[0][0]
+    elif BOARD[1][0] == BOARD[1][1] == BOARD[1][2] != '| |':
+        who_won = BOARD[1][0]
+    elif BOARD[2][0] == BOARD[2][1] == BOARD[2][2] != '| |':
+        who_won = BOARD[2][0]
 
-    if BOARD[0][0] == '|o|' and BOARD[1][1] == '|o|' and BOARD[2][2] == '|o|':
-        win = 'circle'
-        print('Circle wins the game!')
-    elif BOARD[0][0] == '|x|' and BOARD[1][1] == '|x|' and BOARD[2][2] == '|x|':
-        win = 'cross'
-        print('Cross wins the game!')
-    else:
-        win = 0
-    return win
+    elif BOARD[0][0] == BOARD[1][1] == BOARD[2][2] != '| |':
+        who_won = BOARD[0][0]
+    elif BOARD[0][2] == BOARD[1][1] == BOARD[2][0] != '| |':
+        who_won = BOARD[0][2]
+    return who_won
 
 
 def change_player(current_player):
@@ -88,8 +81,8 @@ def game():
         insert_circle_or_cross(current_player, row, column)
         print_board()
         current_player = change_player(current_player)
+    print(f'Congratulations for player {win_game()[1]}!')
 
-
-win_game()
+game()
 
 
