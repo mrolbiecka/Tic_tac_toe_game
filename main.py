@@ -66,16 +66,21 @@ def change_player(current_player):
 
 
 def run_game():
+    move_count = 0
     print("Welcome in the game tic_tac_toe!")
     print("Below you see our board: ")
     print_board()
     current_player = choose_start_player()
-    while check_if_win() is None:
+    while check_if_win() is None and move_count < 9:
         row, column = get_validated_input()
         insert_mark(current_player, row, column)
         print_board()
         current_player = change_player(current_player)
-    print(f'Congratulations for player {check_if_win()}!')
+        move_count += 1
+    if check_if_win() is None:
+        print("It's a tie")
+    else:
+        print(f'Congratulations for player {check_if_win()}!')
 
 
 run_game()
